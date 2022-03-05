@@ -7,7 +7,7 @@ import { JSONContentTypeHeader } from "./constants.mjs";
  * @property {string} access_token JWT token
  * @property {string} refresh_token JWT token
  */
-const storeKeys = ["username", "refresh_token", "access_token"];
+const storeKeys = ["username", "refresh_token", "access_token", "endpoint"];
 
 /**
  * Time required to execute a refresh
@@ -137,7 +137,8 @@ export class Session {
     if (this.refresh_token) {
       const response = await fetch(this.endpoint, {
         method: "POST",
-        headers: JSONContentTypeHeader,
+        headers: [JSONContentTypeHeader,
+        "Autorization: Bearer " + this.refresh_token],
         body: JSON.stringify({
           refresh_token: this.refresh_token,
           grant_type: "refresh_token"
