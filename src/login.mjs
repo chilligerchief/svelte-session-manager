@@ -36,7 +36,7 @@ export async function login(
         return "missing access_token";
       }
       session.update({
-        endpoint,
+        endpoint:data["endpoint"],
         username,
         access_token: data[tokenmap.access_token],
         refresh_token: data[tokenmap.refresh_token]
