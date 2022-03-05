@@ -138,7 +138,7 @@ export class Session {
       const response = await fetch(this.endpoint, {
         method: "POST",
         headers: [JSONContentTypeHeader,
-        "Autorization: Bearer " + this.refresh_token],
+        {"Autorization":"Bearer " + this.refresh_token}],
         body: JSON.stringify({
           refresh_token: this.refresh_token,
           grant_type: "refresh_token"
