@@ -7,7 +7,7 @@ import { JSONContentTypeHeader } from "./constants.mjs";
  * @property {string} access_token JWT token
  * @property {string} refresh_token JWT token
  */
-const storeKeys = ["username", "access_token", "login_endpoint", "refresh_endpoint"];
+const storeKeys = ["username", "access_token","refresh_token", "login_endpoint", "refresh_endpoint"];
 
 /**
  * Time required to execute a refresh
@@ -97,6 +97,9 @@ export class Session {
       }
       if (data.login_endpoint) {
         this.login_endpoint = data.login_endpoint;
+      }
+      if (data.refresh_token) {
+        this.refresh_token = data.refresh_token;
       }
 
       const decoded = decode(data.access_token);
