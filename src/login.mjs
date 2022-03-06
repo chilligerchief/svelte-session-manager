@@ -17,7 +17,7 @@ export async function login(
   username,
   password,
   login_endpoint = "/api/login",
-  refresh_endpoint = "api/refresh",
+  refresh_endpoint = "/api/refresh",
   tokenmap = {
     access_token: "access_token",
     refresh_token: "refresh_token"
