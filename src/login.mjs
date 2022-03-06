@@ -5,24 +5,26 @@ import { JSONContentTypeHeader } from "./constants.mjs";
  * and asking for a access_token.
  * Executes a POST on the endpoint url expecting username, and password as json
  * @param {Session} session to be opened
- * @param {string} endpoint authorization url
  * @param {string} username id of the user
  * @param {string} password user credentials
+ * @param {string} login_endpoint authorization url
+ * @param {string} refresh_endpoint refresh token url
  * @param {object} tokenmap token names in response to internal known values
  * @return {string} error message in case of failure or undefined on success
  */
 export async function login(
   session,
-  endpoint,
   username,
   password,
+  login_endpoint = "/api/login",
+  refresh_endpoint = "api/refresh",
   tokenmap = {
     access_token: "access_token",
     refresh_token: "refresh_token"
   }
 ) {
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(login_endpoint, {
       method: "POST",
       headers: JSONContentTypeHeader,
       body: JSON.stringify({
@@ -36,7 +38,8 @@ export async function login(
         return "missing access_token";
       }
       session.update({
-        endpoint:data["endpoint"],
+        login_endpoint,
+        refresh_endpoint,
         username,
         access_token: data[tokenmap.access_token],
         refresh_token: data[tokenmap.refresh_token]

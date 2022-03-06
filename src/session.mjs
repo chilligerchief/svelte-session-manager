@@ -7,7 +7,7 @@ import { JSONContentTypeHeader } from "./constants.mjs";
  * @property {string} access_token JWT token
  * @property {string} refresh_token JWT token
  */
-const storeKeys = ["username", "refresh_token", "access_token", "endpoint"];
+const storeKeys = ["username", "refresh_token", "access_token", "login_endpoint", "refresh_endpoint"];
 
 /**
  * Time required to execute a refresh
@@ -92,8 +92,11 @@ export class Session {
    */
   update(data) {
     if (data !== undefined) {
-      if (data.endpoint) {
-        this.endpoint = data.endpoint;
+      if (data.refresh_endpoint) {
+        this.refresh_endpoint = data.refresh_endpoint;
+      }
+      if (data.login_endpoint) {
+        this.login_endpoint = data.login_endpoint;
       }
 
       const decoded = decode(data.access_token);
@@ -121,6 +124,8 @@ export class Session {
             }
           }, expiresInMilliSeconds - msecsRequiredForRefresh);
 
+          data.refresh_token = this.refresh_token;
+
           copy(this, data);
           return;
         }
@@ -135,7 +140,7 @@ export class Session {
    */
   async refresh() {
     if (this.refresh_token) {
-      const response = await fetch(this.endpoint, {
+      const response = await fetch(this.refresh_endpoint, {
         method: "POST",
         headers: {...JSONContentTypeHeader, ...{"Authorization":"Bearer " + this.refresh_token}},
         body: JSON.stringify({
