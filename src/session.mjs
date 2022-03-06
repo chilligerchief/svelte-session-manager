@@ -16,9 +16,9 @@ const msecsRequiredForRefresh = 2000;
 
 function copy(destination, source) {
   for (const key of storeKeys) {
-    if (source == undefined || source[key] === undefined) {
+    if (source == undefined) {
       destination[key] = undefined;
-    } else {
+    } else if(source[key] !== undefined){
       destination[key] = source[key];
     }
   }
